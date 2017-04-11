@@ -1,0 +1,15 @@
+<h1>Case</h1>
+<a href="{{url 'cases'}}">< back to cases</a>
+
+<div>
+    <p>{{theCase.title}}</p>
+    <p>
+        <time>{{date theCase.createdAt 'DD-MM-YYYY, HH:mm'}}</time>
+    </p>
+    {{#if theCase.image.filename}}
+        <img src="{{static 'images' theCase.image.filename }}" alt="{{theCase.title}}" width=500>
+    {{/if}}
+    <p>
+        {{{theCase.content}}}
+    </p>
+</div>

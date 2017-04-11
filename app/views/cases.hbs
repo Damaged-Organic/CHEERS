@@ -1,0 +1,18 @@
+<h1>Cases</h1>
+
+{{#each cases}}
+    <div>
+        <p>{{@key}}: {{title}}</p>
+        {{#if image.filename}}
+            <img src="{{static 'images' image.filename }}" alt="{{title}}" width=500>
+        {{/if}}
+        <p>
+            {{{content}}}
+        </p>
+        <a href="{{url 'case' id=id slug=slug}}">details...</a>
+    </div>
+{{else}}
+    <div>
+        <p>No cases.</p>
+    </div>
+{{/each}}
