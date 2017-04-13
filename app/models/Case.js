@@ -5,8 +5,15 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
+let LocalizedType = { en: String, ru: String };
+let getLocalized = (v) => {
+    return v.en;
+};
+
 let caseSchema = new Schema({
-    title: String,
+    title: {
+        type: LocalizedType, get: getLocalized
+    },
     slug: String,
     image: {
         filename: String,

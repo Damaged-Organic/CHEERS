@@ -5,11 +5,18 @@ import { config as dotenv_config } from 'dotenv';
 
 import { connect as database_connect } from '@config/database';
 
+import ipware from '@middleware/ipware';
+import geolocation from '@middleware/geolocation';
+import i18n from '@middleware/i18n';
+
 import path from 'path';
 
 import express from 'express';
 
 import helmet from 'helmet';
+import cors from 'cors';
+
+import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
@@ -40,12 +47,30 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(helmet());
+app.use(cors({
+    origin: ["http://127.0.0.1"],
+    methods: ["GET", "POST"]
+}));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 86000, secure: true }
+}));
 app.use('/static', express.static(path.join(__dirname, 'public')));
+
+app.use(ipware);
+
+// Geolocation module
+app.use(geolocation);
+
+// i18n
+app.use(i18n);
 
 // Routes
 app.use('/', index(router));

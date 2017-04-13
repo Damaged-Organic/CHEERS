@@ -1,6 +1,14 @@
 <h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<p>Welcome to {{title}} ({{locale}})</p>
+<p>{{i18n 'Test'}}</p>
 <ul>
-    <li>{{url 'about' id='13'}}</li>
-    <li></li>
+    <li>
+        <a href="{{url 'i18n_english'}}">English</a>
+    </li>
+    <li>
+        <a href="{{url 'i18n_ukrainian'}}">Ukrainian</a>
+    </li>
+    <li>
+        <a href="{{url 'i18n_russian'}}">Russian</a>
+    </li>
 </ul>

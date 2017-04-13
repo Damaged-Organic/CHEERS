@@ -4,15 +4,34 @@
 import { batchQuery } from '@helpers/database/mongoose';
 
 import Case from '@models/Case';
+import i18n from 'i18n';
 
-export default function(router) {
+export default (router) => {
     /* GET Home page. */
     router.get('/', 'index', (req, res, next) => {
-        res.render('index', { title: 'Express' });
+        res.render('index', {
+            title: 'Express',
+            locale: i18n.getLocale(req)
+        });
+    });
+
+    router.get('/en', 'i18n_english', (req, res, next) => {
+        res.cookie('i18n', 'en');
+        res.redirect('/');
+    });
+
+    router.get('/ua', 'i18n_ukrainian', (req, res, next) => {
+        res.cookie('i18n', 'ua');
+        res.redirect('/');
+    });
+
+    router.get('/ru', 'i18n_russian', (req, res, next) => {
+        res.cookie('i18n', 'ru');
+        res.redirect('/');
     });
 
     /* GET About page */
-    router.get('/about/:id', 'about', (req, res, next) => {
+    router.get('/about', 'about', (req, res, next) => {
         res.render('about', { title: 'About Express' });
     });
 
@@ -43,4 +62,4 @@ export default function(router) {
     });
 
     return router;
-}
+};

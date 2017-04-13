@@ -8,8 +8,8 @@ var Types = keystone.Field.Types;
  * ==========
  */
 var Case = new keystone.List('Case', {
-	map: { name: 'title' },
-	autokey: { path: 'slug', from: 'title', unique: true },
+	map: { name: 'slug' },
+	autokey: { path: 'slug', from: 'title.en', unique: true },
 	defaultSort: '-createdAt'
 });
 
@@ -23,7 +23,10 @@ var imageStorage = new keystone.Storage({
 });
 
 Case.add({
-	title: { type: String, required: true, initial: true },
+	title: {
+		en: { type: String, required: true, initial: true },
+		ru: { type: String },
+	},
 	slug: { type: String, readonly: true },
 	image: { type: Types.File, storage: imageStorage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
@@ -42,5 +45,5 @@ Case.schema.pre('save', function(next) {
 	next();
 });
 
-Case.defaultColumns = 'title, slug|20%';
+Case.defaultColumns = 'title.en, slug|20%';
 Case.register();
