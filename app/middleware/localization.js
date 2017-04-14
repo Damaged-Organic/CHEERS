@@ -1,7 +1,9 @@
 /*jshint node:true*/
 "use strict";
 
-import i18n from '@config/i18n';
+import configureI18n from '@config/localization';
+
+const i18n = configureI18n();
 
 let processDependentModules = (i18n, req, res) => {
     let userCountryCode = req.app.geolocation.userCountryCode;

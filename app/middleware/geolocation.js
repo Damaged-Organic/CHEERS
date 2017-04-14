@@ -12,14 +12,14 @@ let setClientCountryCode = (req, clientIp) => {
 };
 
 let processDependentModules = (geoip, req, res) => {
-    let clientIp = req.app.ipware.clientIp;
+    req.app.geolocation = {};
+
+    let clientIp = req.app.ipDetection.clientIp;
     if( clientIp )
         setClientCountryCode(req, clientIp);
 };
 
 export default (req, res, next) => {
-    req.app.geolocation = {};
-
     processDependentModules(geoip, req, res);
 
     next();

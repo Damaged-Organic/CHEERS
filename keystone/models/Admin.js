@@ -20,6 +20,7 @@ Admin.schema.virtual('canAccessKeystone').get(function () {
 	return this.isAdmin;
 });
 
+Admin.relationship({ path: 'cases', ref: 'Case', refPath: 'admin' });
 
 /**
  * Registration

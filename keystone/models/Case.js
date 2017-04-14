@@ -10,7 +10,8 @@ var Types = keystone.Field.Types;
 var Case = new keystone.List('Case', {
 	map: { name: 'slug' },
 	autokey: { path: 'slug', from: 'title.en', unique: true },
-	defaultSort: '-createdAt'
+	defaultSort: '-createdAt',
+	drilldown: 'admin'
 });
 
 var imageDirectory = 'images';
@@ -31,7 +32,8 @@ Case.add({
 	image: { type: Types.File, storage: imageStorage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
     createdAt: { type: Date, hidden: true },
-    updatedAt: { type: Date, hidden: true }
+    updatedAt: { type: Date, hidden: true },
+	admin: { type: Types.Relationship, ref: 'Admin' },
 });
 
 Case.schema.pre('save', function(next) {
