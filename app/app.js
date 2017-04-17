@@ -3,21 +3,22 @@
 
 import path from 'path';
 
-import { config as dotenv_config } from 'dotenv';
-import databaseConnect from '@config/database/mongoose';
+import { config as dotenvConfigure } from 'dotenv';
 
 import express from 'express';
 
 import NamedRouter from 'named-routes';
 
-import helmet from 'helmet';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import favicon from 'serve-favicon';
+import databaseConnect from '@config/database/mongoose';
 
-import configureCookieParser from '@config/cookieParser';
-import configureSession from '@config/session';
-import configureCors from '@config/cors';
+import configuredLogger from '@config/middleware/logger';
+import configuredHelmet from '@config/middleware/helmet';
+import configuredBodyParser from '@config/middleware/bodyParser';
+import configuredCookieParser from '@config/middleware/cookieParser';
+import configuredSession from '@config/middleware/session';
+import configuredCors from '@config/middleware/cors';
+import configuredFavicon from '@config/middleware/favicon';
+import configuredStatic from '@config/middleware/static';
 
 import ipDetection from '@middleware/ipDetection';
 import geolocation from '@middleware/geolocation';
@@ -25,17 +26,19 @@ import localization from '@middleware/localization';
 
 import { registerHandlebarsHelpers } from '@helpers/view/handlebars';
 
+import { handler_404, handler_500 } from '@routes/errors';
 import index from '@routes/index';
 
-dotenv_config();
+dotenvConfigure();
 databaseConnect();
 
 const app = express();
-
 const router = express.Router();
-const namedRouter = new NamedRouter();
+
+const bodyParser = configuredBodyParser();
 
 // Set named-routes views helpers
+const namedRouter = new NamedRouter();
 namedRouter.extendExpress(router);
 
 // View engine setup
@@ -45,16 +48,18 @@ app.set('view engine', 'hbs');
 // Register handlebars helpers
 registerHandlebarsHelpers(app, router);
 
-app.use(helmet());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(configureCookieParser());
-app.use(configureSession());
-app.use(configureCors());
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use('/static', express.static(path.join(__dirname, 'public')));
+// Third-party middleware
+app.use(configuredHelmet());
+app.use(configuredLogger());
+app.use(bodyParser.json);
+app.use(bodyParser.urlencoded);
+app.use(configuredCookieParser());
+app.use(configuredSession());
+app.use(configuredCors());
+app.use(configuredFavicon());
+app.use(...configuredStatic());
 
+// Custom-tailored middleware
 app.use(ipDetection);
 app.use(geolocation);
 app.use(localization);
@@ -62,25 +67,8 @@ app.use(localization);
 // Routes
 app.use('/', index(router));
 
-// Set 404 if no error given and forward to error handler
-app.use((err, req, res, next) => {
-    if( !err ) {
-        err = new Error('Not Found');
-        err.status = 404;
-    }
+// Error handlers
+app.use(handler_404);
+app.use(handler_500);
 
-    next(err);
-});
-
-// Main error handler
-app.use((err, req, res, next) => {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
-
-module.exports = app;
+export default app;

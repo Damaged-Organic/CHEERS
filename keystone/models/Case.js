@@ -18,7 +18,7 @@ var imageDirectory = 'images';
 var imageStorage = new keystone.Storage({
 	adapter: keystone.Storage.Adapters.FS,
 	fs: {
-		path: path.join(process.env.PATH, imageDirectory),
+		path: path.join(process.env.STATIC_PATH, imageDirectory),
 		publicPath: path.join(process.env.PUBLIC_PATH, imageDirectory)
 	}
 });

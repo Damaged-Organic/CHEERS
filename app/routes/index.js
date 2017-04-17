@@ -3,63 +3,68 @@
 
 import { batchQuery } from '@helpers/database/mongoose';
 
-import Case from '@models/Case';
+import Case from '@models/mongoose/Case';
 import i18n from 'i18n';
 
+let localization = (locale) => {
+    return (req, res, next) => {
+        res.cookie(i18n.cookie, locale);
+        res.redirect('/');
+    };
+};
+
+let homeTemplate = 'index';
+let home = (req, res, next) => {
+    res.render(homeTemplate, {
+        title: 'Express',
+        locale: i18n.getLocale(req),
+    });
+};
+
+let aboutTemplate = 'about';
+let about = (req, res, next) => {
+    res.render(aboutTemplate, {
+        title: 'About Express',
+        locale: i18n.getLocale(req),
+    });
+};
+
+let casesTemplate = 'cases';
+let cases = (req, res, next) => {
+    Case.find((err, cases) => {
+        res.render(casesTemplate, { cases: cases });
+    });
+};
+
+let casesDetailTemplate = 'case';
+let casesDetail = (req, res, next) => {
+    let findParams = {
+        _id: req.params.id,
+        slug: req.params.slug,
+    };
+
+    Case.findOne(findParams, (err, theCase) => {
+        res.render(casesDetailTemplate, { theCase: theCase });
+    });
+};
+
 export default (router) => {
-    /* GET Home page. */
-    router.get('/', 'index', (req, res, next) => {
-        res.render('index', {
-            title: 'Express',
-            locale: i18n.getLocale(req)
-        });
-    });
+    /* Localization */
+    router.get('/en', 'i18n_english', localization('en'));
+    router.get('/ua', 'i18n_ukrainian', localization('ua'));
+    router.get('/ru', 'i18n_russian', localization('ru'));
 
-    router.get('/en', 'i18n_english', (req, res, next) => {
-        res.cookie('i18n', 'en');
-        res.redirect('/');
-    });
+    /* Home page */
+    router.get('/', 'index', home);
 
-    router.get('/ua', 'i18n_ukrainian', (req, res, next) => {
-        res.cookie('i18n', 'ua');
-        res.redirect('/');
-    });
+    /* About page */
+    router.get('/about', 'about', about);
 
-    router.get('/ru', 'i18n_russian', (req, res, next) => {
-        res.cookie('i18n', 'ru');
-        res.redirect('/');
-    });
+    /* Cases page */
+    router.get('/cases', 'cases', cases);
 
-    /* GET About page */
-    router.get('/about', 'about', (req, res, next) => {
-        res.render('about', { title: 'About Express' });
-    });
-
-    router.get('/cases', 'cases', (req, res, next) => {
-        // let cases_query_1 = Case.find();
-        // let cases_query_2 = Case.find();
-        //
-        // batchQuery([cases_query_1, cases_query_2], (objects) => {
-        //     let [cases_1, cases_2] = objects;
-        //
-        //     res.json({cases_1, cases_2});
-        // });
-
-        Case.find((err, cases) => {
-            res.render('cases', { cases: cases });
-        });
-    });
-
-    router.get('/cases/:id/:slug', 'case', (req, res, next) => {
-        let findParams = {
-            _id: req.params.id,
-            slug: req.params.slug
-        };
-
-        Case.findOne(findParams, (err, theCase) => {
-            res.render('case', { theCase: theCase });
-        });
-    });
+    /* Case page */
+    router.get('/cases/:id/:slug', 'case', casesDetail);
 
     return router;
 };

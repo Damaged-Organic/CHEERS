@@ -8,7 +8,7 @@ require('../config/aliases');
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../app').default;
 var debug = require('debug')('nginx-node:server');
 var http = require('http');
 

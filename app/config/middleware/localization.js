@@ -11,7 +11,7 @@ let configure = () => {
         locales: ['en', 'ua', 'ru'],
         defaultLocale: 'en',
         cookie: 'i18n',
-        directory: path.join(__dirname, '../locales')
+        directory: path.join(__dirname, '../../locales')
     });
 
     // Extend i18n with additional methods
