@@ -3,12 +3,14 @@
 
 import { batchQuery } from '@helpers/database/mongoose';
 
-import Case from '@models/mongoose/Case';
 import i18n from 'i18n';
+import { cookie as i18nCookie } from '@config/middleware/localization';
+
+import Case from '@models/mongoose/Case';
 
 let localization = (locale) => {
     return (req, res, next) => {
-        res.cookie(i18n.cookie, locale);
+        res.cookie(i18nCookie, locale);
         res.redirect('/');
     };
 };
@@ -31,6 +33,8 @@ let about = (req, res, next) => {
 
 let casesTemplate = 'cases';
 let cases = (req, res, next) => {
+    Case.locale = i18n.getLocale(req);
+
     Case.find((err, cases) => {
         res.render(casesTemplate, { cases: cases });
     });
@@ -38,6 +42,8 @@ let cases = (req, res, next) => {
 
 let casesDetailTemplate = 'case';
 let casesDetail = (req, res, next) => {
+    Case.locale = i18n.getLocale(req);
+
     let findParams = {
         _id: req.params.id,
         slug: req.params.slug,

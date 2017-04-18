@@ -4,13 +4,15 @@
 import path from 'path';
 import i18n from 'i18n';
 
-import extend from '@helpers/extentions/i18n';
+import extend from '@helpers/extensions/i18n';
+
+const cookie = 'i18n';
 
 let configure = () => {
     i18n.configure({
         locales: ['en', 'ua', 'ru'],
         defaultLocale: 'en',
-        cookie: 'i18n',
+        cookie: cookie,
         directory: path.join(__dirname, '../../locales')
     });
 
@@ -21,3 +23,5 @@ let configure = () => {
 };
 
 export default configure;
+
+export { cookie };

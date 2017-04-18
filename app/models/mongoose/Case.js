@@ -1,13 +1,15 @@
 /*jshint node:true*/
 "use strict";
 
+import i18n from 'i18n';
+
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
 let LocalizedType = { en: String, ru: String };
 let getLocalized = (v) => {
-    return v.en;
+    return v[Case.locale];
 };
 
 let caseSchema = new Schema({
@@ -24,6 +26,20 @@ let caseSchema = new Schema({
     createdAt: Date,
     updatedAt: Date
 });
+
+caseSchema.virtual('locale')
+    .set((locale) => {
+        this.locale = locale;
+    })
+    .get(() => {
+        let locale;
+
+        if( !this.locale )
+            locale = i18n.defaultLocale;
+
+        return this.locale;
+    })
+;
 
 let Case = mongoose.model('Case', caseSchema);
 
