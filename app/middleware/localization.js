@@ -3,8 +3,6 @@
 
 import configuredI18n from '@config/middleware/localization';
 
-const i18n = configuredI18n();
-
 let processDependentModules = (i18n, req, res) => {
     let userCountryCode = req.app.geolocation.userCountryCode;
     if( userCountryCode )
@@ -12,6 +10,8 @@ let processDependentModules = (i18n, req, res) => {
 };
 
 export default (req, res, next) => {
+    const i18n = configuredI18n();
+
     i18n.init(req, res);
 
     processDependentModules(i18n, req, res);

@@ -6,7 +6,13 @@ import path from 'path';
 import express from 'express';
 
 let configure = () => {
-    return ['/static', express.static(path.join(__dirname, '../../public'))];
+    let staticPath = path.resolve(
+        process.env.DIR_BASE,
+        process.env.DIR_APP,
+        'public'
+    );
+
+    return ['/static', express.static(staticPath)];
 };
 
 export default configure;

@@ -6,9 +6,9 @@ import session from 'express-session';
 let configure = () => {
     return session({
         secret: process.env.COOKIE_SECRET,
-        resave: true,
+        resave: false,
         saveUninitialized: true,
-        cookie: { maxAge: 86000, secure: true }
+        cookie: { maxAge: 86000 }
     });
 };
 

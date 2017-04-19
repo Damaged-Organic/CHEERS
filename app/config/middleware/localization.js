@@ -6,14 +6,18 @@ import i18n from 'i18n';
 
 import extend from '@helpers/extensions/i18n';
 
-const cookie = 'i18n';
-
 let configure = () => {
+    let localePath = path.resolve(
+        process.env.DIR_BASE,
+        process.env.DIR_APP,
+        'locales'
+    );
+
     i18n.configure({
         locales: ['en', 'ua', 'ru'],
         defaultLocale: 'en',
-        cookie: cookie,
-        directory: path.join(__dirname, '../../locales')
+        cookie: process.env.COOKIE_LOCALE,
+        directory: localePath
     });
 
     // Extend i18n with additional methods
@@ -23,5 +27,3 @@ let configure = () => {
 };
 
 export default configure;
-
-export { cookie };

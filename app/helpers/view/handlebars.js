@@ -9,7 +9,7 @@ import i18n from 'i18n';
 import hbs from 'hbs';
 
 let staticHelper = (directory, filename) => {
-    return path.join(process.env.PUBLIC_PATH, directory, filename);
+    return path.join(process.env.PATH_PUBLIC, directory, filename);
 };
 
 let dateHelper = (date, format) => {

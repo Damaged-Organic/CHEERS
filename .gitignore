@@ -14,7 +14,7 @@ pids
 *.seed
 
 # Ignore .env configuration files
-.env
+*.env
 
 # Public assets
 public

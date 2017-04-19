@@ -4,14 +4,13 @@
 import { batchQuery } from '@helpers/database/mongoose';
 
 import i18n from 'i18n';
-import { cookie as i18nCookie } from '@config/middleware/localization';
 
 import Case from '@models/mongoose/Case';
 
 let localization = (locale) => {
     return (req, res, next) => {
-        res.cookie(i18nCookie, locale);
-        res.redirect('/');
+        res.cookie(process.env.COOKIE_LOCALE, locale);
+        res.redirect(req.path.replace(locale+'/', ''));
     };
 };
 
@@ -56,9 +55,9 @@ let casesDetail = (req, res, next) => {
 
 export default (router) => {
     /* Localization */
-    router.get('/en', 'i18n_english', localization('en'));
-    router.get('/ua', 'i18n_ukrainian', localization('ua'));
-    router.get('/ru', 'i18n_russian', localization('ru'));
+    router.get(['/en$', '/en/*'], localization('en'));
+    router.get(['/ua$', '/ua/*'], 'i18n_ukrainian', localization('ua'));
+    router.get(['/ru$', '/ru/*'], 'i18n_russian', localization('ru'));
 
     /* Home page */
     router.get('/', 'index', home);

@@ -5,7 +5,7 @@ import cors from 'cors';
 
 let configure = () => {
     return cors({
-        origin: [process.env.ORIGIN],
+        origin: [process.env.CORS_ORIGIN],
         methods: ["GET", "POST"]
     });
 };

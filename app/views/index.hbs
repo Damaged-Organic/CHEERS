@@ -3,13 +3,13 @@
 <p>{{i18n 'Test'}}</p>
 <ul>
     <li>
-        <a href="{{url 'i18n_english'}}">English</a>
+        <a href="/en/{{ req.path }}">English</a>
     </li>
     <li>
-        <a href="{{url 'i18n_ukrainian'}}">Ukrainian</a>
+        <a href="/ua/{{ req.path }}">Ukrainian</a>
     </li>
     <li>
-        <a href="{{url 'i18n_russian'}}">Russian</a>
+        <a href="/ru/{{ req.path }}">Russian</a>
     </li>
 </ul>
 

@@ -29,17 +29,17 @@ import { registerHandlebarsHelpers } from '@helpers/view/handlebars';
 import { handler_404, handler_500 } from '@routes/errors';
 import index from '@routes/index';
 
-dotenvConfigure();
+const app = express();
+
+dotenvConfigure({ path: path.resolve(`.${app.get('env')}.env`) });
 databaseConnect();
 
-const app = express();
-const router = express.Router();
-
-const bodyParser = configuredBodyParser();
-
 // Set named-routes views helpers
+const router = express.Router();
 const namedRouter = new NamedRouter();
 namedRouter.extendExpress(router);
+
+const bodyParser = configuredBodyParser();
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
