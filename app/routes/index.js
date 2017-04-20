@@ -7,13 +7,6 @@ import i18n from 'i18n';
 
 import Case from '@models/mongoose/Case';
 
-let localization = (locale) => {
-    return (req, res, next) => {
-        res.cookie(process.env.COOKIE_LOCALE, locale);
-        res.redirect(req.path.replace(locale+'/', ''));
-    };
-};
-
 let homeTemplate = 'index';
 let home = (req, res, next) => {
     res.render(homeTemplate, {
@@ -24,6 +17,7 @@ let home = (req, res, next) => {
 
 let aboutTemplate = 'about';
 let about = (req, res, next) => {
+    res.locals.path = req.path;
     res.render(aboutTemplate, {
         title: 'About Express',
         locale: i18n.getLocale(req),
@@ -54,11 +48,6 @@ let casesDetail = (req, res, next) => {
 };
 
 export default (router) => {
-    /* Localization */
-    router.get(['/en$', '/en/*'], localization('en'));
-    router.get(['/ua$', '/ua/*'], 'i18n_ukrainian', localization('ua'));
-    router.get(['/ru$', '/ru/*'], 'i18n_russian', localization('ru'));
-
     /* Home page */
     router.get('/', 'index', home);
 

@@ -4,9 +4,15 @@
 import configuredI18n from '@config/middleware/localization';
 
 let processDependentModules = (i18n, req, res) => {
-    let userCountryCode = req.app.geolocation.userCountryCode;
-    if( userCountryCode )
-        i18n.setInitialLocaleByCountryCode(req, res, userCountryCode);
+    // Subdomain-defined locale has highest priority.
+    // If not defined, trying to use geolocation locale,
+    // and doing nothing for i18n default fallback
+    let currentLocale =
+        req.app.subdomains.userSubdomain ||
+        req.app.geolocation.userCountryCode;
+    if( currentLocale ) {
+        i18n.setInitialLocaleByCode(req, res, currentLocale);
+    }
 };
 
 export default (req, res, next) => {

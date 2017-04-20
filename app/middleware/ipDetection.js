@@ -3,16 +3,21 @@
 
 import ipware from 'ipware';
 
-let setClientIp = (req) => {
+let getClientIp = (req) => {
     let clientIp = ipware().get_ip(req).clientIp;
-    if( clientIp )
-        req.app.ipDetection.clientIp = clientIp;
+
+    if( !clientIp )
+        return false;
+
+    return clientIp;
 };
 
 let processDependentModules = (ipware, req, res) => {
     req.app.ipDetection = {};
 
-    setClientIp(req);
+    let clientIp;
+    if( (clientIp = getClientIp(req)) )
+        req.app.ipDetection.clientIp = clientIp;
 };
 
 export default (req, res, next) => {

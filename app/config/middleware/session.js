@@ -8,7 +8,7 @@ let configure = () => {
         secret: process.env.COOKIE_SECRET,
         resave: false,
         saveUninitialized: true,
-        cookie: { maxAge: 86000 }
+        cookie: { domain: 'cheers.dev', maxAge: 86000 }
     });
 };
 

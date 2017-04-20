@@ -20,6 +20,7 @@ import configuredCors from '@config/middleware/cors';
 import configuredFavicon from '@config/middleware/favicon';
 import configuredStatic from '@config/middleware/static';
 
+import subdomain from '@middleware/subdomain';
 import ipDetection from '@middleware/ipDetection';
 import geolocation from '@middleware/geolocation';
 import localization from '@middleware/localization';
@@ -60,6 +61,7 @@ app.use(configuredFavicon());
 app.use(...configuredStatic());
 
 // Custom-tailored middleware
+app.use(subdomain);
 app.use(ipDetection);
 app.use(geolocation);
 app.use(localization);

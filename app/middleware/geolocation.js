@@ -3,20 +3,26 @@
 
 import geoip from 'geoip-ultralight';
 
-let setClientCountryCode = (req, clientIp) => {
+let getUserCountryCode = (req, clientIp) => {
     let countryCode = geoip.lookupCountry(clientIp);
-    if( countryCode ) {
-        countryCode = countryCode.toLowerCase();
-        req.app.geolocation.userCountryCode = countryCode;
-    }
+
+    if( !countryCode )
+        return false;
+
+    countryCode = countryCode.toLowerCase();
+
+    return countryCode;
 };
 
 let processDependentModules = (geoip, req, res) => {
     req.app.geolocation = {};
 
     let clientIp = req.app.ipDetection.clientIp;
-    if( clientIp )
-        setClientCountryCode(req, clientIp);
+    if( clientIp ) {
+        let countryCode;
+        if( (countryCode = getUserCountryCode(req, clientIp)) )
+            req.app.geolocation.userCountryCode = countryCode;
+    }
 };
 
 export default (req, res, next) => {

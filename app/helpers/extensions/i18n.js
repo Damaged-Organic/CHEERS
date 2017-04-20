@@ -25,17 +25,17 @@ let getLocaleWithCookie = (cookie) => {
     };
 };
 
-let setInitialLocaleByCountryCode = (i18n) => {
-    return function setInitialLocaleByCountryCode(req, res, userCountryCode) {
+let setInitialLocaleByCode = (i18n) => {
+    return function setInitialLocaleByCode(req, res, localeCode) {
         let currentLocale;
 
         // New user without locale cookie set
         if( !i18n.getLocaleWithCookie(req) ) {
             switch(true) {
-                case localizations.ua.countries.includes(userCountryCode):
+                case localizations.ua.countries.includes(localeCode):
                     currentLocale = localizations.ua.language;
                     break;
-                case localizations.ru.countries.includes(userCountryCode):
+                case localizations.ru.countries.includes(localeCode):
                     currentLocale = localizations.ru.language;
                     break;
                 default:
@@ -51,8 +51,8 @@ let setInitialLocaleByCountryCode = (i18n) => {
 };
 
 export default (i18n) => {
-    i18n.setLocaleWithCookie = setLocaleWithCookie(i18n.cookie);
-    i18n.getLocaleWithCookie = getLocaleWithCookie(i18n.cookie);
+    i18n.setLocaleWithCookie = setLocaleWithCookie(process.env.COOKIE_LOCALE);
+    i18n.getLocaleWithCookie = getLocaleWithCookie(process.env.COOKIE_LOCALE);
 
-    i18n.setInitialLocaleByCountryCode = setInitialLocaleByCountryCode(i18n);
+    i18n.setInitialLocaleByCode = setInitialLocaleByCode(i18n);
 };

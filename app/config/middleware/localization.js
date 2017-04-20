@@ -14,7 +14,9 @@ let configure = () => {
     );
 
     i18n.configure({
-        locales: ['en', 'ua', 'ru'],
+        locales: [
+            process.env.LOCALE_EN, process.env.LOCALE_UA, process.env.LOCALE_RU
+        ],
         defaultLocale: 'en',
         cookie: process.env.COOKIE_LOCALE,
         directory: localePath
