@@ -21,10 +21,28 @@ let dateHelper = (date, format) => {
     return date.format(format);
 };
 
+let toUpperHelper = (text) => {
+    return text.toUpperCase();
+};
+
+let toLowerHelper = (text) => {
+    return text.toLowerCase();
+};
+
 let i18nHelper = (res) => {
     return (...args) => {
         let name = args.shift();
         return res.__(name);
+    };
+};
+
+let absoluteURLHelper = (req) => {
+    return (subdomain) => {
+        let domain = process.env.ORIGIN;
+
+        subdomain = subdomain ? subdomain + '.' : null;
+
+        return `${req.protocol}://${subdomain}${domain}${req.path}`;
     };
 };
 
@@ -36,15 +54,34 @@ let urlHelper = (router) => {
 };
 
 export function registerHandlebarsHelpers(app, router) {
+    hbs.registerPartials(path.join(__dirname, '../../views/partials'));
+
+    hbs.registerPartial('locale_partial', (options) => {
+        let template = hbs.handlebars.partials.locale;
+        let partial = hbs.handlebars.compile(template);
+
+        return partial({ locales: i18n.getLocales() });
+    });
+
     // Static assets path
     hbs.registerHelper('static', staticHelper);
 
     // Date formatter
     hbs.registerHelper('date', dateHelper);
 
+    // Case transformers
+    hbs.registerHelper('toUpper', toUpperHelper);
+    hbs.registerHelper('toLower', toLowerHelper);
+
     // i18n translator
     app.use((req, res, next) => {
         hbs.registerHelper('i18n', i18nHelper(res));
+        next();
+    });
+
+    // Absolute URL builder
+    app.use((req, res, next) => {
+        hbs.registerHelper('absoluteURL', absoluteURLHelper(req));
         next();
     });
 

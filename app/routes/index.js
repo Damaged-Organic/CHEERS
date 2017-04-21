@@ -17,7 +17,6 @@ let home = (req, res, next) => {
 
 let aboutTemplate = 'about';
 let about = (req, res, next) => {
-    res.locals.path = req.path;
     res.render(aboutTemplate, {
         title: 'About Express',
         locale: i18n.getLocale(req),

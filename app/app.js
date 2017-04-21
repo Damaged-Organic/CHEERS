@@ -25,7 +25,8 @@ import ipDetection from '@middleware/ipDetection';
 import geolocation from '@middleware/geolocation';
 import localization from '@middleware/localization';
 
-import { registerHandlebarsHelpers } from '@helpers/view/handlebars';
+import { registerHandlebarsHelpers } from '@helpers/view/handlebarsHelpers';
+import { registerHandlebarsPartials } from '@helpers/view/handlebarsPartials';
 
 import { handler_404, handler_500 } from '@routes/errors';
 import index from '@routes/index';
@@ -48,6 +49,7 @@ app.set('view engine', 'hbs');
 
 // Register handlebars helpers
 registerHandlebarsHelpers(app, router);
+registerHandlebarsPartials();
 
 // Third-party middleware
 app.use(configuredHelmet());

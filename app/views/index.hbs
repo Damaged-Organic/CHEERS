@@ -1,17 +1,8 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}} ({{locale}})</p>
 <p>{{i18n 'Test'}}</p>
-<ul>
-    <li>
-        <a href="http://en.cheers.dev{{ req.path }}">English</a>
-    </li>
-    <li>
-        <a href="http://ua.cheers.dev{{ req.path }}">Ukrainian</a>
-    </li>
-    <li>
-        <a href="http://ru.cheers.dev{{ req.path }}">Russian</a>
-    </li>
-</ul>
+
+{{> localesPartial}}
 
 <p>
     <a href="{{url 'about'}}">About page</a>
