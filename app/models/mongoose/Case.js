@@ -41,9 +41,8 @@ caseSchema.virtual('locale')
     })
 ;
 
-caseSchema.pre('init', (done, o) => {
-    console.log(done, o, i18n.getLocale());
-    // o.locale
+caseSchema.pre('init', (done, caseObject) => {
+    caseObject.locale = i18n.getLocale();
     done();
 });
 
