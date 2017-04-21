@@ -41,6 +41,12 @@ caseSchema.virtual('locale')
     })
 ;
 
+caseSchema.pre('init', (done, o) => {
+    console.log(done, o, i18n.getLocale());
+    // o.locale
+    done();
+});
+
 let Case = mongoose.model('Case', caseSchema);
 
 export default Case;
