@@ -25,23 +25,19 @@ let about = (req, res, next) => {
 
 let casesTemplate = 'cases';
 let cases = (req, res, next) => {
-    Case.locale = i18n.getLocale(req);
-
-    Case.find((err, cases) => {
+    Case.morph(req).find((err, cases) => {
         res.render(casesTemplate, { cases: cases });
     });
 };
 
 let casesDetailTemplate = 'case';
 let casesDetail = (req, res, next) => {
-    Case.locale = i18n.getLocale(req);
-
     let findParams = {
         _id: req.params.id,
         slug: req.params.slug,
     };
 
-    Case.findOne(findParams, (err, theCase) => {
+    Case.morph(req).findOne(findParams, (err, theCase) => {
         res.render(casesDetailTemplate, { theCase: theCase });
     });
 };

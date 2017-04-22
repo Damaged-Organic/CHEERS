@@ -41,11 +41,12 @@ caseSchema.virtual('locale')
     })
 ;
 
-caseSchema.pre('init', (done, caseObject) => {
-    caseObject.locale = i18n.getLocale();
-    done();
-});
-
 let Case = mongoose.model('Case', caseSchema);
+
+Case.morph = function(req) {
+    this.locale = i18n.getLocale(req);
+
+    return this;
+};
 
 export default Case;
