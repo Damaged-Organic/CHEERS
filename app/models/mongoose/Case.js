@@ -5,16 +5,16 @@ import i18n from 'i18n';
 
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+import {
+    i18nType, i18nTypeGetter, i18nVirtualMethods, i18nModelMethods
+} from '@helpers/localization/mongoose';
 
-let LocalizedType = { en: String, ru: String };
-let getLocalized = (v) => {
-    return v[Case.locale];
-};
+const modelName = 'Case';
+const Schema = mongoose.Schema;
 
 let caseSchema = new Schema({
     title: {
-        type: LocalizedType, get: getLocalized
+        type: i18nType, get: i18nTypeGetter(modelName)
     },
     slug: String,
     image: {
@@ -27,26 +27,10 @@ let caseSchema = new Schema({
     updatedAt: Date
 });
 
-caseSchema.virtual('locale')
-    .set((locale) => {
-        this.locale = locale;
-    })
-    .get(() => {
-        let locale;
+i18nVirtualMethods(caseSchema);
 
-        if( !this.locale )
-            locale = i18n.defaultLocale;
+let Case = mongoose.model(modelName, caseSchema);
 
-        return this.locale;
-    })
-;
-
-let Case = mongoose.model('Case', caseSchema);
-
-Case.morph = function(req) {
-    this.locale = i18n.getLocale(req);
-
-    return this;
-};
+i18nModelMethods(Case);
 
 export default Case;

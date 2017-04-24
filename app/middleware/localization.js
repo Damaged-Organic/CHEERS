@@ -9,7 +9,9 @@ let processDependentModules = (i18n, req, res) => {
     // and doing nothing for i18n default fallback
     let currentLocale =
         req.app.subdomains.userSubdomain ||
-        req.app.geolocation.userCountryCode;
+        req.app.geolocation.userCountryCode
+    ;
+
     if( currentLocale ) {
         i18n.setInitialLocaleByCode(req, res, currentLocale);
     }

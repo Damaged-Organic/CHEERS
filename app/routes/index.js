@@ -25,7 +25,7 @@ let about = (req, res, next) => {
 
 let casesTemplate = 'cases';
 let cases = (req, res, next) => {
-    Case.morph(req).find((err, cases) => {
+    Case.i18nInit(req, res).find((err, cases) => {
         res.render(casesTemplate, { cases: cases });
     });
 };
@@ -37,7 +37,7 @@ let casesDetail = (req, res, next) => {
         slug: req.params.slug,
     };
 
-    Case.morph(req).findOne(findParams, (err, theCase) => {
+    Case.i18nInit(req, res).findOne(findParams, (err, theCase) => {
         res.render(casesDetailTemplate, { theCase: theCase });
     });
 };
