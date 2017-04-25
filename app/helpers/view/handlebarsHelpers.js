@@ -55,7 +55,7 @@ let urlHelper = (router) => {
 export function registerHandlebarsHelpers(app, router) {
     hbs.registerPartials(path.join(__dirname, '../../views/partials'));
 
-    hbs.registerPartial('locale_partial', (options) => {
+    hbs.registerPartial('locale_partial', () => {
         let template = hbs.handlebars.partials.locale;
         let partial = hbs.handlebars.compile(template);
 

@@ -1,7 +1,5 @@
 "use strict";
 
-import i18n from 'i18n';
-
 import mongoose from 'mongoose';
 
 import {

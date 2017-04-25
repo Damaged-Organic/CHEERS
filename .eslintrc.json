@@ -8,5 +8,8 @@
         "ecmaVersion": 8,
         "sourceType": "module",
         "impliedStrict": true
+    },
+    "rules": {
+        "no-console": 0
     }
 }
