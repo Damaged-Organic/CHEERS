@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 import {
     i18nType, i18nTypeGetter, i18nVirtualMethods, i18nModelMethods
-} from '@helpers/localization/mongoose';
+} from '@helpers/database/i18n';
 
 const modelName = 'Case';
 const Schema = mongoose.Schema;

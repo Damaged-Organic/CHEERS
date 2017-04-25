@@ -1,62 +1,66 @@
 "use strict";
 
-import { batchQuery } from '@helpers/database/mongoose';
-
 import i18n from 'i18n';
+
+import { asyncHandler } from '@routes/errors';
+import { throwNotFoundException } from '@helpers/exceptions/http';
 
 import Case from '@models/mongoose/Case';
 
 let homeTemplate = 'index';
-let home = (req, res, next) => {
+let home = asyncHandler(async (req, res, next) => {
     res.render(homeTemplate, {
         title: 'Express',
         locale: i18n.getLocale(req),
     });
-};
+});
 
 let aboutTemplate = 'about';
-let about = (req, res, next) => {
+let about = asyncHandler(async (req, res, next) => {
     res.render(aboutTemplate, {
         title: 'About Express',
         locale: i18n.getLocale(req),
     });
-};
+});
 
 let casesTemplate = 'cases';
-let cases = (req, res, next) => {
-    Case.i18nInit(req, res).find((err, cases) => {
-        res.render(casesTemplate, { cases: cases });
-    });
-};
+let cases = asyncHandler(async (req, res, next) => {
+    let cases = Case.i18nInit(req, res).find();
+
+    res.render(casesTemplate, { cases: cases });
+});
 
 let casesDetailTemplate = 'case';
-let casesDetail = async (req, res, next) => {
+let casesDetail = asyncHandler(async (req, res, next) => {
     let findParams = {
         _id: req.params.id,
         slug: req.params.slug,
     };
 
-    try {
-        let theCase = await Case.i18nInit(req, res).findOne(findParams);
-    } catch(err) {
-        next(err);
-    }
+    let theCase = await Case.i18nInit(req, res).findOne(findParams);
+
+    if( !theCase )
+        throwNotFoundException('Case not found!');
 
     res.render(casesDetailTemplate, { theCase: theCase });
-};
+});
 
 export default (router) => {
     /* Home page */
-    router.get('/', 'index', home);
+    router.get(
+        '/', 'index', home);
 
     /* About page */
-    router.get('/about', 'about', about);
+    router.get(
+        '/about', 'about', about);
 
     /* Cases page */
-    router.get('/cases', 'cases', cases);
+    router.get(
+        '/cases', 'cases', cases);
 
     /* Case page */
-    router.get('/cases/:id/:slug', 'case', casesDetail);
+    router.get(
+        '/cases/:id/:slug', 'case', casesDetail);
 
     return router;
 };

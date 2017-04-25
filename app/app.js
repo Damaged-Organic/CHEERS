@@ -27,7 +27,7 @@ import localization from '@middleware/localization';
 import { registerHandlebarsHelpers } from '@helpers/view/handlebarsHelpers';
 import { registerHandlebarsPartials } from '@helpers/view/handlebarsPartials';
 
-import { handler_404, handler_500 } from '@routes/errors';
+import { asyncHandler, handler404, handler500 } from '@routes/errors';
 import index from '@routes/index';
 
 const app = express();
@@ -71,7 +71,7 @@ app.use(localization);
 app.use('/', index(router));
 
 // Error handlers
-app.use(handler_404);
-app.use(handler_500);
+app.use(handler404);
+app.use(handler500);
 
 export default app;

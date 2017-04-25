@@ -1,6 +1,16 @@
 "use strict";
 
-let handler_404 = (err, req, res, next) => {
+let asyncHandler = (route) => {
+    return (req, res, next) => {
+        const routePromise = route(req, res, next);
+
+        if( routePromise.catch ) {
+            routePromise.catch(err => next(err));
+        }
+    }
+}
+
+let handler404 = (err, req, res, next) => {
     if( !err ) {
         err = new Error('Not Found');
         err.status = 404;
@@ -9,7 +19,7 @@ let handler_404 = (err, req, res, next) => {
     next(err);
 };
 
-let handler_500 = (err, req, res, next) => {
+let handler500 = (err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -19,4 +29,4 @@ let handler_500 = (err, req, res, next) => {
     res.render('error');
 };
 
-export { handler_404, handler_500 };
+export { asyncHandler, handler404, handler500 };
