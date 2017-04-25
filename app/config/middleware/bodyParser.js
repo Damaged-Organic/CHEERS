@@ -1,4 +1,3 @@
-/*jshint node:true*/
 "use strict";
 
 import bodyParser from 'body-parser';

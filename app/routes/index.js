@@ -1,4 +1,3 @@
-/*jshint node:true*/
 "use strict";
 
 import { batchQuery } from '@helpers/database/mongoose';
@@ -31,15 +30,19 @@ let cases = (req, res, next) => {
 };
 
 let casesDetailTemplate = 'case';
-let casesDetail = (req, res, next) => {
+let casesDetail = async (req, res, next) => {
     let findParams = {
         _id: req.params.id,
         slug: req.params.slug,
     };
 
-    Case.i18nInit(req, res).findOne(findParams, (err, theCase) => {
-        res.render(casesDetailTemplate, { theCase: theCase });
-    });
+    try {
+        let theCase = await Case.i18nInit(req, res).findOne(findParams);
+    } catch(err) {
+        next(err);
+    }
+
+    res.render(casesDetailTemplate, { theCase: theCase });
 };
 
 export default (router) => {

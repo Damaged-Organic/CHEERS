@@ -1,4 +1,3 @@
-/*jshint node:true*/
 "use strict";
 
 import configuredI18n from '@config/middleware/localization';

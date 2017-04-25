@@ -1,4 +1,3 @@
-/*jshint node:true*/
 "use strict";
 
 import session from 'express-session';
