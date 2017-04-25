@@ -8,7 +8,7 @@ import { throwNotFoundException } from '@helpers/exceptions/http';
 import Case from '@models/mongoose/Case';
 
 let homeTemplate = 'index';
-let home = asyncHandler(async (req, res, next) => {
+let home = asyncHandler(async (req, res) => {
     res.render(homeTemplate, {
         title: 'Express',
         locale: i18n.getLocale(req),
@@ -16,7 +16,7 @@ let home = asyncHandler(async (req, res, next) => {
 });
 
 let aboutTemplate = 'about';
-let about = asyncHandler(async (req, res, next) => {
+let about = asyncHandler(async (req, res) => {
     res.render(aboutTemplate, {
         title: 'About Express',
         locale: i18n.getLocale(req),
@@ -24,14 +24,14 @@ let about = asyncHandler(async (req, res, next) => {
 });
 
 let casesTemplate = 'cases';
-let cases = asyncHandler(async (req, res, next) => {
-    let cases = Case.i18nInit(req, res).find();
+let cases = asyncHandler(async (req, res) => {
+    let cases = await Case.i18nInit(req, res).find();
 
     res.render(casesTemplate, { cases: cases });
 });
 
 let casesDetailTemplate = 'case';
-let casesDetail = asyncHandler(async (req, res, next) => {
+let casesDetail = asyncHandler(async (req, res) => {
     let findParams = {
         _id: req.params.id,
         slug: req.params.slug,
