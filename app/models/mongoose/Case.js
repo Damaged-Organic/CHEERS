@@ -2,16 +2,19 @@
 
 import mongoose from 'mongoose';
 
-import {
-    i18nType, i18nTypeGetter, i18nVirtualMethods, i18nModelMethods
-} from '@helpers/database/i18n';
+/* THIS MODULE SHOULD BE COMPLETELY REMOVED */
+// import {
+//     i18nType, i18nTypeGetter, i18nVirtualMethods, i18nModelMethods
+// } from '@helpers/database/i18n';
+
+import { I18nSchema } from '@models/mongoose/extensions/schema';
+import { I18nString } from '@models/mongoose/extensions/schemaType';
 
 const modelName = 'Case';
-const Schema = mongoose.Schema;
 
-let caseSchema = new Schema({
+let caseSchema = new I18nSchema({
     title: {
-        type: i18nType, get: i18nTypeGetter(modelName)
+        type: I18nString, modelName: modelName
     },
     slug: String,
     image: {
@@ -24,10 +27,6 @@ let caseSchema = new Schema({
     updatedAt: Date
 });
 
-i18nVirtualMethods(caseSchema);
-
 let Case = mongoose.model(modelName, caseSchema);
-
-i18nModelMethods(Case);
 
 export default Case;
