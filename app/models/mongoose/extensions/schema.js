@@ -6,40 +6,32 @@ import mongoose from 'mongoose';
 
 import { I18nStringSchemaType } from '@models/mongoose/extensions/schemaType';
 
-class I18nSchema extends mongoose.Schema {
+class I18nSchema extends mongoose.Schema
+{
     constructor(obj, options) {
         super(obj, options);
 
+        this._locale = i18n.defaultLocale;
+
         this.statics.i18nInit = function(req, res) {
-            this.locale = i18n.getLocale(req);
+            this._locale = i18n.getLocale(req);
 
             return this;
         }
-
-        // this.locale;
-
-        // this.virtual('locale')
-        //     .set((locale) => {
-        //         this.locale = locale;
-        //     })
-        //     .get(() => {
-        //         if( !this.locale )
-        //             this.locale = i18n.defaultLocale;
-        //
-        //         return this.locale;
-        //     })
-        // ;
     }
 
     set locale(locale) {
-        this.locale = locale;
+        if( !(typeof locale === 'string') )
+            return false;
+
+        this._locale = locale;
     }
 
     get locale() {
-        if( !this.locale )
-            this.locale = i18n.defaultLocale;
+        if( !this._locale )
+            return undefined;
 
-        return this.locale;
+        return this._locale;
     }
 }
 
