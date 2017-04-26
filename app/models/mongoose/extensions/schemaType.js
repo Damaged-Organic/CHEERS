@@ -2,26 +2,35 @@
 
 import mongoose from 'mongoose';
 
+const locales = [
+    process.env.LOCALE_EN, process.env.LOCALE_UA, process.env.LOCALE_RU
+];
+
 class I18nString {
-    constructor(v) {
-        for(let lang in v) {
-            this[lang] = v[lang];
-        }
+    constructor(value) {
+        locales.map((locale) => {
+            this[locale] = (locale in value) ? value[locale] : null
+        });
     }
 }
 
 class I18nStringSchemaType extends mongoose.SchemaType {
     constructor(path, options, instance) {
         if( !options.modelName )
-            throw new Error('Model name should be set!');
+            throw new Error("modelName should be set in schemaType options!");
 
         super(path, options, instance);
     }
 
-    cast(v) {
+    cast(value) {
         let model = mongoose.model(this.options.modelName);
 
-        return new I18nString(v)[model.locale];
+        if( !model )
+            throw new Error("Schema hasn't been registered for modelName");
+
+        let typeObject = new I18nString(value);
+
+        return typeObject[model.locale];
     }
 }
 

@@ -2,8 +2,6 @@
 
 import path from 'path';
 
-import { config as dotenvConfigure } from 'dotenv';
-
 import express from 'express';
 
 import NamedRouter from 'named-routes';
@@ -32,7 +30,6 @@ import index from '@routes/index';
 
 const app = express();
 
-dotenvConfigure({ path: path.resolve(`.${app.get('env')}.env`) });
 databaseConnect();
 
 // Set named-routes views helpers

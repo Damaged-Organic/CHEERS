@@ -16,17 +16,30 @@ class I18nSchema extends mongoose.Schema {
             return this;
         }
 
-        this.virtual('locale')
-            .set((locale) => {
-                this.locale = locale;
-            })
-            .get(() => {
-                if( !this.locale )
-                    this.locale = i18n.defaultLocale;
+        // this.locale;
 
-                return this.locale;
-            })
-        ;
+        // this.virtual('locale')
+        //     .set((locale) => {
+        //         this.locale = locale;
+        //     })
+        //     .get(() => {
+        //         if( !this.locale )
+        //             this.locale = i18n.defaultLocale;
+        //
+        //         return this.locale;
+        //     })
+        // ;
+    }
+
+    set locale(locale) {
+        this.locale = locale;
+    }
+
+    get locale() {
+        if( !this.locale )
+            this.locale = i18n.defaultLocale;
+
+        return this.locale;
     }
 }
 

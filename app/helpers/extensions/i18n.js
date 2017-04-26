@@ -3,11 +3,11 @@
 const localizations = {
     ua: {
         countries: ['ua'],
-        language: 'ua'
+        language: process.env.LOCALE_UA
     },
     ru: {
         countries: ['ru', 'by', 'kz'],
-        language: 'ru'
+        language: process.env.LOCALE_RU
     }
 };
 
