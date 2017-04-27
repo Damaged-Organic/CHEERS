@@ -42,8 +42,6 @@ let casesDetail = asyncHandler(async (req, res) => {
     if( !theCase )
         throwNotFoundException('Case not found!');
 
-    console.log(theCase);
-
     res.render(casesDetailTemplate, { theCase: theCase });
 });
 
