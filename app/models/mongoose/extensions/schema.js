@@ -6,32 +6,37 @@ import mongoose from 'mongoose';
 
 import { I18nStringSchemaType } from '@models/mongoose/extensions/schemaType';
 
+const localeSymbol = Symbol();
+
+// Could also accept the response argument
+const i18nInit = function(req) {
+    this.schema.locale = i18n.getLocale(req);
+
+    return this;
+}
+
 class I18nSchema extends mongoose.Schema
 {
     constructor(obj, options) {
         super(obj, options);
 
-        this._locale = i18n.defaultLocale;
+        this[localeSymbol] = i18n.defaultLocale;
 
-        this.statics.i18nInit = function(req, res) {
-            this._locale = i18n.getLocale(req);
-
-            return this;
-        }
+        this.statics.i18nInit = i18nInit;
     }
 
     set locale(locale) {
         if( !(typeof locale === 'string') )
             return false;
 
-        this._locale = locale;
+        this[localeSymbol] = locale;
     }
 
     get locale() {
-        if( !this._locale )
+        if( !this[localeSymbol] )
             return undefined;
 
-        return this._locale;
+        return this[localeSymbol];
     }
 }
 

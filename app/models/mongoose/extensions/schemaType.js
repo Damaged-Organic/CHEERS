@@ -28,12 +28,12 @@ class I18nStringSchemaType extends mongoose.SchemaType
     cast(value) {
         let model = mongoose.model(this.options.modelName);
 
-        if( !model )
+        if( !model || !model.schema )
             throw new Error("Schema hasn't been registered for modelName");
 
         let typeObject = new I18nString(value);
 
-        return typeObject[model._locale];
+        return typeObject[model.schema.locale];
     }
 }
 
