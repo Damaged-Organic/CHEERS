@@ -2,8 +2,10 @@
 
 import cookieParser from 'cookie-parser';
 
+const cookie = process.env.COOKIE_SECRET;
+
 let configure = () => {
-    return cookieParser(process.env.COOKIE_SECRET);
+    return cookieParser(cookie);
 };
 
 export default configure;

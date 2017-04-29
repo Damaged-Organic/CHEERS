@@ -3,6 +3,7 @@
 import path from 'path';
 
 import i18n from 'i18n';
+import { getInstance } from '@config/middleware/localization'
 
 import hbs from 'hbs';
 

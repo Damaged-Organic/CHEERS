@@ -3,15 +3,13 @@
 import subdomain from 'express-subdomain';
 
 let getUserSubdomain = (req) => {
-    let domain_parts = process.env.ORIGIN.split('.').length;
-
     // To avoid multi-level domain collision in express-subdomain
     // See https://github.com/bmullan91/express-subdomain/issues/17
-    if(req.subdomains.length < domain_parts)
+    let domain_parts = process.env.ORIGIN.split('.').length - 1;
+    if( domain_parts > req.subdomains.length )
         return false;
 
     let userSubdomain = req.subdomains.pop();
-
     if( !userSubdomain )
         return false;
 
@@ -22,7 +20,7 @@ let getUserSubdomain = (req) => {
     if( !availableSubdomains.includes(userSubdomain) )
         throw new Error('Subdomain not found');
 
-     return userSubdomain;
+    return userSubdomain;
 };
 
 let processDependentModules = (subdomain, req, res) => {

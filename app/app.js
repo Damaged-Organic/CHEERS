@@ -37,8 +37,6 @@ const router = express.Router();
 const namedRouter = new NamedRouter();
 namedRouter.extendExpress(router);
 
-const bodyParser = configuredBodyParser();
-
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -47,15 +45,17 @@ app.set('view engine', 'hbs');
 registerHandlebarsHelpers(app, router);
 registerHandlebarsPartials();
 
+const bodyParser = configuredBodyParser();
+
 // Third-party middleware
 app.use(configuredHelmet());
-app.use(configuredLogger());
+app.use(configuredLogger(app.get('env')));
 app.use(bodyParser.json);
 app.use(bodyParser.urlencoded);
 app.use(configuredCookieParser());
 app.use(configuredSession());
 app.use(configuredCors());
-app.use(configuredFavicon());
+// app.use(configuredFavicon());
 app.use(...configuredStatic());
 
 // Custom-tailored middleware

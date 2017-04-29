@@ -2,8 +2,8 @@
 
 import i18n from 'i18n';
 
+import { throwNotFoundException } from '@routes/exceptions/http';
 import { asyncHandler } from '@routes/errors';
-import { throwNotFoundException } from '@helpers/exceptions/http';
 
 import Case from '@models/mongoose/Case';
 

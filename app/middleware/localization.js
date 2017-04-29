@@ -11,9 +11,8 @@ let processDependentModules = (i18n, req, res) => {
         req.app.geolocation.userCountryCode
     ;
 
-    if( currentLocale ) {
-        i18n.setInitialLocaleByCode(req, res, currentLocale);
-    }
+    if( currentLocale )
+        i18n.setRequestResponseLocale(req, res, currentLocale);
 };
 
 export default (req, res, next) => {

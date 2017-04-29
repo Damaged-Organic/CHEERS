@@ -4,13 +4,13 @@ import path from 'path';
 
 import express from 'express';
 
-let configure = () => {
-    let staticPath = path.resolve(
-        process.env.DIR_BASE,
-        process.env.DIR_APP,
-        'public'
-    );
+const staticPath = path.resolve(
+    process.env.DIR_BASE,
+    process.env.DIR_APP,
+    'public'
+);
 
+let configure = () => {
     return ['/static', express.static(staticPath)];
 };
 
