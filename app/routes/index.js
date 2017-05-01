@@ -1,9 +1,8 @@
 "use strict";
 
-import i18n from 'i18n';
-
-import { throwNotFoundException } from '@routes/exceptions/http';
 import { asyncHandler } from '@routes/errors';
+import { throwNotFoundException } from '@routes/exceptions/http';
+import { instance as localization } from '@config/middleware/localization';
 
 import Case from '@models/mongoose/Case';
 
@@ -11,7 +10,7 @@ let homeTemplate = 'index';
 let home = asyncHandler(async (req, res) => {
     res.render(homeTemplate, {
         title: 'Express',
-        locale: i18n.getLocale(req),
+        locale: localization.getLocale(req),
     });
 });
 
@@ -19,7 +18,7 @@ let aboutTemplate = 'about';
 let about = asyncHandler(async (req, res) => {
     res.render(aboutTemplate, {
         title: 'About Express',
-        locale: i18n.getLocale(req),
+        locale: localization.getLocale(req),
     });
 });
 
@@ -47,20 +46,16 @@ let casesDetail = asyncHandler(async (req, res) => {
 
 export default (router) => {
     /* Home page */
-    router.get(
-        '/', 'index', home);
+    router.get('/', 'index', home);
 
     /* About page */
-    router.get(
-        '/about', 'about', about);
+    router.get('/about', 'about', about);
 
     /* Cases page */
-    router.get(
-        '/cases', 'cases', cases);
+    router.get('/cases', 'cases', cases);
 
     /* Case page */
-    router.get(
-        '/cases/:id/:slug', 'case', casesDetail);
+    router.get('/cases/:id/:slug', 'case', casesDetail);
 
     return router;
 };

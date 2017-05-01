@@ -1,18 +1,14 @@
 /**
- * Application aliases.
- */
-
-require('../config/aliases');
-
-/**
  * dotenv configuration according to preset NODE_ENV
  */
 
-var path = require('path');
+require('../config/runtime/dotenv');
 
-require('dotenv').config({
-    path: path.resolve(__dirname, '../../.' + process.env.NODE_ENV + '.env')
-});
+/**
+ * Application aliases.
+ */
+
+require('../config/runtime/aliases');
 
 /**
  * Module dependencies.

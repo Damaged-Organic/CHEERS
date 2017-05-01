@@ -1,62 +1,55 @@
 "use strict";
 
-import path from 'path';
-
 import express from 'express';
 
 import NamedRouter from 'named-routes';
 
-import databaseConnect from '@config/database/mongoose';
+import configureTemplating from '@config/templating/handlebars';
+import configureDatabase from '@config/database/mongoose';
 
-import configuredLogger from '@config/middleware/logger';
-import configuredHelmet from '@config/middleware/helmet';
-import configuredBodyParser from '@config/middleware/bodyParser';
-import configuredCookieParser from '@config/middleware/cookieParser';
-import configuredSession from '@config/middleware/session';
-import configuredCors from '@config/middleware/cors';
-import configuredFavicon from '@config/middleware/favicon';
-import configuredStatic from '@config/middleware/static';
+import configureLogger from '@config/middleware/logger';
+import configureHelmet from '@config/middleware/helmet';
+import configureBodyParser from '@config/middleware/bodyParser';
+import configureCookieParser from '@config/middleware/cookieParser';
+import configureSession from '@config/middleware/session';
+import configureCors from '@config/middleware/cors';
+import configureFavicon from '@config/middleware/favicon';
+import configureStatic from '@config/middleware/static';
 
 import subdomain from '@middleware/subdomain';
 import ipDetection from '@middleware/ipDetection';
 import geolocation from '@middleware/geolocation';
 import localization from '@middleware/localization';
 
-import { registerHandlebarsHelpers } from '@helpers/view/handlebarsHelpers';
-import { registerHandlebarsPartials } from '@helpers/view/handlebarsPartials';
-
 import { handler404, handler500 } from '@routes/errors';
 import index from '@routes/index';
 
 const app = express();
-
-databaseConnect();
 
 // Set named-routes views helpers
 const router = express.Router();
 const namedRouter = new NamedRouter();
 namedRouter.extendExpress(router);
 
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// Templating (Handlebars)
+configureTemplating(app, router);
 
-// Register handlebars helpers
-registerHandlebarsHelpers(app, router);
-registerHandlebarsPartials();
-
-const bodyParser = configuredBodyParser();
+// Database (Mongoose)
+configureDatabase();
 
 // Third-party middleware
-app.use(configuredHelmet());
-app.use(configuredLogger(app.get('env')));
+app.use(configureHelmet());
+app.use(configureLogger(app.get('env')));
+
+const bodyParser = configureBodyParser();
 app.use(bodyParser.json);
 app.use(bodyParser.urlencoded);
-app.use(configuredCookieParser());
-app.use(configuredSession());
-app.use(configuredCors());
-// app.use(configuredFavicon());
-app.use(...configuredStatic());
+
+app.use(configureCookieParser());
+app.use(configureSession());
+app.use(configureCors());
+app.use(configureFavicon());
+app.use(...configureStatic());
 
 // Custom-tailored middleware
 app.use(subdomain);

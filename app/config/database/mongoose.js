@@ -2,15 +2,19 @@
 
 import mongoose from 'mongoose';
 
-let databaseConnect = () => {
+const connectionURI = process.env.MONGO_URI;
+
+let configure = () => {
+    mongoose.Promise = Promise;
+
     // Set ES2015 promises to avoid deprecation notice
     mongoose.Promise = Promise;
 
-    mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(connectionURI);
 
     mongoose.connection.on('error', (err) => {
         console.error('Mongoose errored: ' + err);
     });
 };
 
-export default databaseConnect;
+export default configure;

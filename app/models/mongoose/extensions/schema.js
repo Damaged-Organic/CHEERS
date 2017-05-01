@@ -1,16 +1,15 @@
 "use strict";
 
-import i18n from 'i18n';
-
 import mongoose from 'mongoose';
 
+import { instance as localization } from '@config/middleware/localization';
 import { I18nStringSchemaType } from '@models/mongoose/extensions/schemaType';
 
 const _locale = Symbol();
 
 // Could also accept the response argument
 const i18nInit = function(req) {
-    this.schema.locale = i18n.getLocale(req);
+    this.schema.locale = localization.getLocale(req);
 
     return this;
 }
@@ -20,7 +19,7 @@ class I18nSchema extends mongoose.Schema
     constructor(obj, options) {
         super(obj, options);
 
-        this[_locale] = i18n.defaultLocale;
+        this[_locale] = null;
 
         this.statics.i18nInit = i18nInit;
     }
@@ -34,7 +33,7 @@ class I18nSchema extends mongoose.Schema
 
     get locale() {
         if( !this[_locale] )
-            return undefined;
+            return localization.defaultLocale;
 
         return this[_locale];
     }
