@@ -5,6 +5,7 @@ import { throwNotFoundException } from '@routes/exceptions/http';
 import { instance as localization } from '@config/middleware/localization';
 
 import Case from '@models/mongoose/Case';
+import CaseBlock from '@models/mongoose/CaseBlock';
 
 let homeTemplate = 'index';
 let home = asyncHandler(async (req, res) => {
@@ -41,7 +42,11 @@ let casesDetail = asyncHandler(async (req, res) => {
     if( !theCase )
         throwNotFoundException('Case not found!');
 
-    res.render(casesDetailTemplate, { theCase: theCase });
+    let theCaseBlocks = await CaseBlock.i18nInit(req, res).find({ case: theCase });
+
+    res.render(casesDetailTemplate, {
+        theCase: theCase, theCaseBlocks: theCaseBlocks
+    });
 });
 
 export default (router) => {

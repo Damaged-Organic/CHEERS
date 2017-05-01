@@ -47,9 +47,12 @@ function registerHelpers(helpers, app, router) {
 }
 
 function registerPartials(partials) {
-    hbs.registerPartials(partialsPath);
+    // Make sure that partials are loaded before registering them
+    let partialsSet = () => {
+        hbs.registerPartial('localesPartial', partials.locales);
+    }
 
-    hbs.registerPartial('localesPartial', partials.locales);
+    hbs.registerPartials(partialsPath, partialsSet);
 }
 
 export default configure;

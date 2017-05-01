@@ -31,8 +31,8 @@ Case.add({
 	slug: { type: String, readonly: true },
 	image: { type: Types.File, storage: imageStorage },
 	content: { type: Types.Html, wysiwyg: true, height: 400 },
-    createdAt: { type: Date, hidden: true },
-    updatedAt: { type: Date, hidden: true },
+	createdAt: { type: Date, hidden: true },
+	updatedAt: { type: Date, hidden: true },
 	admin: { type: Types.Relationship, ref: 'Admin' },
 });
 

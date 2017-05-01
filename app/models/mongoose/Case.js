@@ -8,6 +8,10 @@ import { I18nString } from '@models/mongoose/extensions/schemaType';
 const modelName = 'Case';
 
 let caseSchema = new I18nSchema({
+    caseBlocks: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CaseBlock'
+    },
     title: {
         type: I18nString, modelName: modelName
     },
