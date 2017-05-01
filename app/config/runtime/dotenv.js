@@ -1,7 +1,5 @@
-var dotenv = require('dotenv');
-
 var path = require('path');
 
-dotenv.config({
+require('dotenv').config({
     path: path.resolve(__dirname, '../../../.' + process.env.NODE_ENV + '.env')
 });
