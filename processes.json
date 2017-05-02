@@ -1,0 +1,11 @@
+{
+  "apps" : [{
+    "name"      : "cheers",
+    "script"    : "./app_dist/bin/www.js",
+    "instances" : 0,
+    "exec_mode" : "cluster",
+    "env": {
+      "NODE_ENV": "development"
+    }
+  }]
+}
