@@ -6,10 +6,20 @@
     <p>
         <time>{{date theCase.createdAt 'DD-MM-YYYY, HH:mm'}}</time>
     </p>
+
     {{#if theCase.image.filename}}
         <img src="{{static 'images' theCase.image.filename }}" alt="{{theCase.title}}" width=500>
     {{/if}}
+
     <p>
         {{{theCase.content}}}
     </p>
+
+    <p>------------------------------</p>
+    {{#each theCaseBlocks }}
+        <p>{{ title }}</p>
+        <p>{{ content }}</p>
+    {{/each}}
+    <p>------------------------------</p>
+
 </div>

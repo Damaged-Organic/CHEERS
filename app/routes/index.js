@@ -32,17 +32,17 @@ let cases = asyncHandler(async (req, res) => {
 
 let casesDetailTemplate = 'case';
 let casesDetail = asyncHandler(async (req, res) => {
-    let findParams = {
+    let theCase = await Case.i18nInit(req, res).findOne({
         _id: req.params.id,
         slug: req.params.slug,
-    };
-
-    let theCase = await Case.i18nInit(req, res).findOne(findParams);
+    });
 
     if( !theCase )
         throwNotFoundException('Case not found!');
 
-    let theCaseBlocks = await CaseBlock.i18nInit(req, res).find({ case: theCase });
+    let theCaseBlocks = await CaseBlock.i18nInit(req, res).find({
+        case: theCase
+    });
 
     res.render(casesDetailTemplate, {
         theCase: theCase, theCaseBlocks: theCaseBlocks

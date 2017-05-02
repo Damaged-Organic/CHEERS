@@ -17,7 +17,8 @@ let caseBlockSchema = new I18nSchema({
     },
     content: {
         type: I18nString, modelName: modelName
-    }
+    },
+    order: Number
 });
 
 let CaseBlock = mongoose.model(modelName, caseBlockSchema);

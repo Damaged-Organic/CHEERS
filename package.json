@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon --exec babel-node ./app/bin/www.js",
     "build": "babel ./app --out-dir ./app_dist --copy-files",
-    "prod": "NODE_ENV=production node ./app_dist/bin/www.js"
+    "prod": "NODE_ENV=development node ./app_dist/bin/www.js"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
