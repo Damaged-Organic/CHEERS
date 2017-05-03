@@ -10,7 +10,7 @@ var Types = keystone.Field.Types;
 var Case = new keystone.List('Case', {
 	map: { name: 'slug' },
 	autokey: { path: 'slug', from: 'title.en', unique: true },
-	defaultSort: '-createdAt',
+	defaultSort: '-updatedAt',
 });
 
 var imageDirectory = 'images';
@@ -49,7 +49,7 @@ Case.schema.pre('save', function (next) {
 
 Case.relationship({ path: 'caseBlocks', ref: 'CaseBlock', refPath: 'case' });
 
-Case.defaultColumns = 'title.en, slug|20%';
+Case.defaultColumns = 'title.en, slug|20%, updatedAt, createdAt';
 Case.register();
 
 module.exports = Case;

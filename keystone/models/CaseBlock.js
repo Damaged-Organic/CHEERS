@@ -1,19 +1,18 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var Case = require('./Case');
-
 /**
  * CaseBlock Model
  * ==========
  */
 var CaseBlock = new keystone.List('CaseBlock', {
-	map: { name: 'slug' },
-	defaultSort: 'title',
+	map: { name: 'title.en' },
+	defaultSort: 'case order',
+	defaultColumns: 'title.en, case, order',
 });
 
 CaseBlock.add({
-	case: { type: Types.Relationship, ref: 'Case' },
+	case: { type: Types.Relationship, ref: 'Case', required: true, initial: true },
 	title: {
 		en: { type: String, required: true, initial: true },
 		ru: { type: String },
@@ -24,12 +23,15 @@ CaseBlock.add({
 });
 
 CaseBlock.schema.pre('save', function (next) {
-	Case.model.count({}, (err, count) => {
+	if (this.order) {
+		return next();
+	}
+
+	CaseBlock.model.count({ case: this.case }, (err, count) => {
 		this.order = ++count;
 
 		next();
 	});
 });
 
-CaseBlock.defaultColumns = 'title.en, slug|20%';
 CaseBlock.register();
